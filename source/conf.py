@@ -216,7 +216,7 @@ html_search_language = 'ru'
 #html_search_scorer = 'scorer.js'
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'nextgiscourcesdoc'
+htmlhelp_basename = 'nextgisogportaldoc'
 
 # -- Options for LaTeX output ---------------------------------------------
 
