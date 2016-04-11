@@ -122,6 +122,12 @@ PostgreSQL при старте системы:
    Предполагается, что CKAN и PostgreSQL установлены на одном хосте.
    Если это не так, то потребуется дополнительная настройка PostgreSQL.
 
+Не забудьте перезапустить PostgreSQL:
+
+.. code:: bash
+
+    systemctl restart postgresql
+
 
 Создание конфигурационного файла CKAN
 -------------------------------------
@@ -180,7 +186,56 @@ PostgreSQL при старте системы:
     cd /opt/solr5/solr/bin
     ./solr create -c ckan
 
-.. TODO: Настройка схемы CKAN.
+Настроим схему:
+
+.. code:: bash
+
+    cd /var/solr/data/ckan/conf
+    ln -s /usr/lib/ckan/default/src/ckan/ckan/config/solr/schema.xml .
+
+Удалим файл ``managed-schema``:
+
+.. code:: bash
+
+    rm managed-schema
+
+Откройте файл ``solrconfig.xml``. Найдите элемент
+``<schemaFactory class="ManagedIndexSchemaFactory">``
+и закомментируйте его:
+
+.. code:: xml
+
+    <!--
+    <schemaFactory class="ManagedIndexSchemaFactory">
+      <bool name="mutable">true</bool>
+      <str name="managedSchemaResourceName">managed-schema</str>
+    </schemaFactory>
+    -->
+
+Добавьте элемент:
+
+.. code:: xml
+
+    <schemaFactory class="ClassicIndexSchemaFactory"/>
+
+Найдите элемент ``<initParams>``, ссылающийся на
+``add-unknown-fields-to-the-schema`` и закомментируйте его:
+
+.. code:: xml
+
+    <!--
+    <initParams path="/update/**">
+      <lst name="defaults">
+        <str name="update.chain">add-unknown-fields-to-the-schema</str>
+      </lst>
+    </initParams>
+    -->
+
+Перезапускаем Solr:
+
+.. code:: bash
+
+    sudo service solr restart
 
 Отредактируем файл ``/etc/ckan/default/development.ini``, раскомментировав
 соответствующую строку и указав URL Solr:
