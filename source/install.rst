@@ -19,7 +19,7 @@
 
     sudo yum install epel-release
     sudo yum install python-pip python-virtualenv python-devel
-    sudo yum install git gcc-c++ java-1.8.0-openjdk unzip lsof
+    sudo yum install git gcc-c++ java-1.8.0-openjdk unzip lsof libxml2-devel libxslt-devel
     sudo yum install postgresql postgresql-server postgresql-libs postgresql-contrib postgresql-devel
 
 .. warning::
@@ -141,7 +141,7 @@ PostgreSQL при старте системы:
 
 .. code:: bash
 
-    su -s /bin/bash - ckan
+    sudo su -s /bin/bash - ckan
     . default/bin/activate
     cd /usr/lib/ckan/default/src/ckan
     paster make-config ckan /etc/ckan/default/development.ini
@@ -231,6 +231,33 @@ PostgreSQL при старте системы:
     </initParams>
     -->
 
+Также закомментируйте этот элемент:
+
+.. code:: xml
+
+    <!--
+    <processor class="solr.AddSchemaFieldsUpdateProcessorFactory">
+      <str name="defaultFieldType">strings</str>
+      <lst name="typeMapping">
+        <str name="valueClass">java.lang.Boolean</str>
+        <str name="fieldType">booleans</str>
+      </lst>
+      <lst name="typeMapping">
+        <str name="valueClass">java.util.Date</str>
+        <str name="fieldType">tdates</str>
+      </lst>
+      <lst name="typeMapping">
+        <str name="valueClass">java.lang.Long</str>
+        <str name="valueClass">java.lang.Integer</str>
+        <str name="fieldType">tlongs</str>
+      </lst>
+      <lst name="typeMapping">
+        <str name="valueClass">java.lang.Number</str>
+        <str name="fieldType">tdoubles</str>
+      </lst>
+    </processor>
+    -->
+
 Перезапускаем Solr:
 
 .. code:: bash
@@ -259,13 +286,99 @@ PostgreSQL при старте системы:
 Установка DataStore
 -------------------
 
+Откроём файл ``development.ini`` и в список плагинов добавим
+``datastore``:
+
+.. code:: bash
+
+    ckan.plugins = stats text_view image_view recline_view datastore
+
+В базе данных создадим пользователя ``datastore_default``, который
+не будет имет прав на запись, только на чтение:
+
+.. code:: bash
+
+    sudo -u postgres createuser -S -D -R -P -l datastore_default
+
+Создадим базу данных ``datastore_default``, владельцем которой будет
+пользователь ``ckan_default``:
+
+.. code:: bash
+
+    sudo -u postgres createdb -O ckan_default datastore_default -E utf-8
+
+Откроем файл ``development.ini``, расскомментируем и отредактируем
+следующие строки, указав соответствующие пароли:
+
+.. code:: bash
+
+    ckan.datastore.write_url = postgresql://ckan_default:pass@localhost/datastore_default
+    ckan.datastore.read_url = postgresql://datastore_default:pass@localhost/datastore_default
+
+Выставим права в базе данных:
+
+.. code:: bash
+
+    cd /usr/lib/ckan
+    . default/bin/activate
+    cd default/src/ckan
+    paster --plugin=ckan datastore set-permissions -c /etc/ckan/default/development.ini | sudo -u postgres psql --set ON_ERROR_STOP=1
+
+
+Установка DataPusher
+--------------------
+
+.. code:: bash
+
+    sudo su -s /bin/bash - ckan
+    virtualenv --no-site-packages datapusher
+    . datapusher/bin/activate
+    mkdir datapusher/src
+    cd datapusher/src
+    git clone -b stable https://github.com/ckan/datapusher.git
+    cd datapusher
+    pip install -r requirements.txt
+
+
+В файле ``development.ini`` добавим соответствующий плагин:
+
+.. code:: bash
+
+    ckan.plugins = <прочие плагины> datapusher
+
+Также раскомментируйте следующие строки:
+
+.. code:: bash
+
+    ckan.datapusher.formats = csv xls xlsx tsv application/csv application/vnd.ms-excel application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+    ckan.datapusher.url = http://127.0.0.1:8800/
+
 
 Ссылка на ``who.ini``
 ---------------------
 
+Файл ``who.ini`` (конфигурационный файл Repoze.who) должен располагаться
+в той же директории, что и конфигурационный файл CKAN:
+
+.. code:: bash
+
+    ln -s /usr/lib/ckan/default/src/ckan/who.ini /etc/ckan/default/who.ini
+
+
+Дополнительные настройки
+------------------------
+
 
 Установка темы
 --------------
+
+
+Установка плагинов
+------------------
+
+
+Исправления текущего кода
+-------------------------
 
 
 Открытие портов
