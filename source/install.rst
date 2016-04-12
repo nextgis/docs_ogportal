@@ -19,7 +19,7 @@
 
     sudo yum install epel-release
     sudo yum install python-pip python-virtualenv python-devel
-    sudo yum install git gcc-c++ java-1.8.0-openjdk unzip lsof libxml2-devel libxslt-devel
+    sudo yum install git gcc-c++ java-1.8.0-openjdk unzip lsof libxml2-devel libxslt-devel mailcap
     sudo yum install postgresql postgresql-server postgresql-libs postgresql-contrib postgresql-devel
 
 .. warning::
@@ -365,12 +365,37 @@ PostgreSQL при старте системы:
     ln -s /usr/lib/ckan/default/src/ckan/who.ini /etc/ckan/default/who.ini
 
 
+Установка темы
+--------------
+
+В файл ``development.ini`` добавьте плагин с темой:
+
+.. code:: bash
+
+    ckan.plugins = <прочие плагины> fareast_theme
+
+И установите саму тему:
+
+.. code:: bash
+
+    sudo su -s /bin/bash - ckan
+    . default/bin/activate
+    cd default/src
+    git clone https://github.com/nextgis/ckanext-fareast_theme.git
+    pip install -e ./ckanext-fareast_theme
+
+
 Дополнительные настройки
 ------------------------
 
+В файлe ``development.ini``:
 
-Установка темы
---------------
+.. code:: bash
+
+    ckan.auth.create_user_via_web = false
+    ckan.locale_default = ru
+    ckan.locales_offered = en ru
+    ckan.locales_filtered_out = ru_RU
 
 
 Установка плагинов
