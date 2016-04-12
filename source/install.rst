@@ -328,6 +328,9 @@ PostgreSQL при старте системы:
 Установка DataPusher
 --------------------
 
+За основу взята инструкция по установке из
+`официальной документации <http://docs.ckan.org/projects/datapusher/en/latest/>`_.
+
 .. code:: bash
 
     sudo su -s /bin/bash - ckan
@@ -413,3 +416,15 @@ PostgreSQL при старте системы:
 Развёртывание
 -------------
 
+
+Backup и Restore
+----------------
+
+Данные процедуры описаны в разделе
+`db: Manage databases <http://docs.ckan.org/en/latest/maintaining/paster.html#db-manage-databases>`_
+официальной документации.
+
+.. warning::
+   Если после восстановления данных из архива отображается, что
+   число наборов данных равно ``0``, то поможет
+   `переиндексация <http://docs.ckan.org/en/latest/maintaining/paster.html#search-index-rebuild-search-index>`_.
