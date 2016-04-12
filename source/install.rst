@@ -396,6 +396,7 @@ PostgreSQL при старте системы:
 .. code:: bash
 
     ckan.auth.create_user_via_web = false
+    ckan.favicon = /base/images/ckan.ico
     ckan.locale_default = ru
     ckan.locales_offered = en ru
     ckan.locales_filtered_out = ru_RU
