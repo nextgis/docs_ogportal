@@ -152,7 +152,7 @@ PostgreSQL при старте системы:
 .. code:: bash
 
     sqlalchemy.url = postgresql://ckan_default:pass@localhost/ckan_default
-    ckan.site_url = http://domain_name
+    ckan.site_url = http://82.162.194.216/ckan
 
 
 Установка Solr5
@@ -443,7 +443,7 @@ PostgreSQL при старте системы:
 
     [uwsgi]
 
-    autoload = true
+    plugins = python
 
     master = true
     workers = 2
@@ -451,14 +451,15 @@ PostgreSQL при старте системы:
 
     pidfile = /run/uwsgi/%n.pid
     socket = /run/uwsgi/%n.sock
-    chmod-socket = 660
+    chmod-socket = 666
 
     logto = /var/log/uwsgi/%n.log
     log-date = true
 
     harakiri = 6000
 
-    wsgi-file = /etc/ckan/default/uwsgiapp.py
+    mount = /ckan=/etc/ckan/default/uwsgiapp.py
+    manage-script-name = true
 
 Поскольку uWSGI запущен в режиме ``Tyrant``, то необходимо изменить
 владельца конфигурационного файла ``ckan.ini``:
@@ -497,7 +498,59 @@ PostgreSQL при старте системы:
     sudo systemctl start uwsgi
     sudo systemctl enable uwsgi
 
-..TODO: Nginx
+В директории ``/etc/nginx/conf.d`` создадим файл ``ckan.conf``
+следующего содержания:
+
+.. code:: bash
+
+    uwsgi_cache_path /var/lib/nginx/cache levels=1:2 keys_zone=cache:30m max_size=250m;
+
+    server {
+          listen               80;
+          server_name          82.162.194.216;
+          client_max_body_size 100M;
+
+          location /ckan {
+            uwsgi_read_timeout 600s;
+            uwsgi_send_timeout 600s;
+
+            include            uwsgi_params;
+            uwsgi_pass         unix:/run/uwsgi/ckan.sock;
+
+            proxy_redirect     off;
+            proxy_set_header   Host $host;
+            proxy_set_header   X-Real-IP $remote_addr;
+            proxy_set_header   X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header   X-Forwarded-Host $server_name;
+
+            # Cache stuff
+            uwsgi_cache        cache;
+            uwsgi_cache_bypass $cookie_auth_tkt;
+            uwsgi_no_cache     $cookie_auth_tkt;
+            uwsgi_cache_valid  30m;
+            uwsgi_cache_key    $host$scheme$proxy_host$request_uri;
+        }
+    }
+
+Создадим директорию под кэш:
+
+.. code:: bash
+
+    sudo mkdir /var/lib/nginx/cache
+    sudo chown nginx:nginx /var/lib/nginx/cache
+
+Запускаем Nginx:
+
+.. code:: bash
+
+    systemctl start nginx
+    systemctl enable nginx
+
+.. warning::
+   Если приложение при попытке его открыть возвращает ``502 Bad Gateway``,
+   а в логах Nginx
+   ``connect() to unix:/run/uwsgi/ckan.sock failed (13: Permission denied)``,
+   то причина в SELinux - либо настройте его, либо отключите.
 
 
 Развёртывание DataPusher
