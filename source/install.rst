@@ -402,6 +402,108 @@ PostgreSQL при старте системы:
     ckan.locales_filtered_out = ru_RU
 
 
+Развёртывание CKAN
+------------------
+
+За основу взята инструкция по развёртыванию из
+`официальной документации <http://docs.ckan.org/en/latest/maintaining/installing/deployment.html>`_.
+
+
+Переходим в директорию ``/etc/ckan/default``:
+
+.. code:: bash
+
+    sudo su -s /bin/bash - ckan
+    cd /etc/ckan/default
+
+И создаём файл ``uwsgiapp.py`` со следующим содержимым:
+
+.. code:: python
+
+    import os
+    activate_this = os.path.join('/usr/lib/ckan/default/bin/activate_this.py')
+    execfile(activate_this, dict(__file__=activate_this))
+
+    from paste.deploy import loadapp
+    config_filepath = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'development.ini')
+    from paste.script.util.logging_config import fileConfig
+    fileConfig(config_filepath)
+    application = loadapp('config:%s' % config_filepath)
+
+Устанавливаем Nginx и uWSGI:
+
+.. code:: bash
+
+    sudo yum install uwsgi uwsgi-plugin-python
+
+Переходим в директорию ``/etc/uwsgi.d`` и создаём файл ``ckan.ini``
+следующего содержания:
+
+.. code:: bash
+
+    [uwsgi]
+
+    autoload = true
+
+    master = true
+    workers = 2
+    no-orphans = true
+
+    pidfile = /run/uwsgi/%n.pid
+    socket = /run/uwsgi/%n.sock
+    chmod-socket = 660
+
+    logto = /var/log/uwsgi/%n.log
+    log-date = true
+
+    harakiri = 6000
+
+    wsgi-file = /etc/ckan/default/uwsgiapp.py
+
+Поскольку uWSGI запущен в режиме ``Tyrant``, то необходимо изменить
+владельца конфигурационного файла ``ckan.ini``:
+
+.. code:: bash
+
+    sudo chown uwsgi:uwsgi ckan.ini
+
+Создадим директори, куда будут писаться логи:
+
+.. code:: bash
+
+    sudo mkdir /var/log/uwsgi
+    sudo touch /var/log/uwsgi/ckan.log
+    sudo chown uwsgi:uwsgi /var/log/uwsgi/ckan.log
+
+Для ротации логов в директории ``/etc/logrotate.d`` создадим файл
+``uwsgi`` следующего содержания:
+
+.. code:: bash
+
+    /var/log/uwsgi/*.log {
+        copytruncate
+        daily
+        rotate 5
+        compress
+        delaycompress
+        missingok
+        notifempty
+    }
+
+Запускаем uWSGI:
+
+.. code:: bash
+
+    sudo systemctl start uwsgi
+    sudo systemctl enable uwsgi
+
+..TODO: Nginx
+
+
+Развёртывание DataPusher
+------------------------
+
+
 Установка плагинов
 ------------------
 
@@ -412,10 +514,6 @@ PostgreSQL при старте системы:
 
 Открытие портов
 ---------------
-
-
-Развёртывание
--------------
 
 
 Backup и Restore
