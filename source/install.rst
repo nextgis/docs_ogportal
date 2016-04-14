@@ -403,6 +403,10 @@ PostgreSQL при старте системы:
     # Убрать '/ckan' если приложение монтируется в '/'
     ckan.favicon = /ckan/base/images/ckan.ico
 
+    # На данный каталог у пользователя, под которым будет
+    # запускаться CKAN должны быть права на запись
+    ckan.storage_path = /mnt/portal/ckan/default
+
 
 Развёртывание CKAN
 ------------------
@@ -448,7 +452,7 @@ PostgreSQL при старте системы:
     plugins = python
 
     master = true
-    workers = 2
+    workers = 4
     no-orphans = true
 
     pidfile = /run/uwsgi/%n.pid
@@ -545,8 +549,8 @@ PostgreSQL при старте системы:
 
 .. code:: bash
 
-    systemctl start nginx
-    systemctl enable nginx
+    sudo systemctl start nginx
+    sudo systemctl enable nginx
 
 .. warning::
    Если приложение при попытке его открыть возвращает ``502 Bad Gateway``,
@@ -557,6 +561,26 @@ PostgreSQL при старте системы:
 
 Развёртывание DataPusher
 ------------------------
+
+.. code:: bash
+
+    sudo cp /usr/lib/ckan/datapusher/src/datapusher/deployment/datapusher.wsgi /etc/ckan/
+    sudo cp /usr/lib/ckan/datapusher/src/datapusher/deployment/datapusher_settings.py /etc/ckan/
+    sudo chown ckan:ckan /etc/ckan/datapusher.wsgi
+    sudo chown ckan:ckan /etc/ckan/datapusher_settings.py
+
+Подготавливаем uWSGI:
+
+.. code:: bash
+
+    sudo touch /etc/uwsgi.d/datapusher.ini
+    sudo chown uwsgi:uwsgi /etc/uwsgi.d/datapusher.ini
+    sudo touch /var/log/uwsgi/datapusher.log
+    sudo chown uwsgi:uwsgi /var/log/uwsgi/datapusher.log
+
+В файл ``datapusher.ini`` помещаем следующее содержимое:
+
+.. TODO:
 
 
 Установка плагинов
@@ -569,6 +593,13 @@ PostgreSQL при старте системы:
 
 Открытие портов
 ---------------
+
+Откроем ``80`` порт:
+
+.. code:: bash
+
+    sudo firewall-cmd --zone=public --add-port=80/tcp --permanent
+    sudo firewall-cmd --reload
 
 
 Backup и Restore
