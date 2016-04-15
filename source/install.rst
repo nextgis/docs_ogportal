@@ -128,6 +128,13 @@ PostgreSQL при старте системы:
 
     systemctl restart postgresql
 
+.. warning::
+   Если вы устанавливали PostgreSQL из стороннего репозитория,
+   например `отсюда <http://yum.postgresql.org/>`_, то может
+   потребоваться дополнительная настройка переменной ``PATH``,
+   либо придётся писать полный путь до команд, например,
+   ``/usr/pgsql-9.5/bin/psql``.
+
 
 Создание конфигурационного файла CKAN
 -------------------------------------
@@ -583,12 +590,22 @@ PostgreSQL при старте системы:
 .. TODO:
 
 
-Установка плагинов
-------------------
+Установка расширения ckanext-geoview
+------------------------------------
+
+.. TODO:
+
+# Settings for ckanext-geoview extension
+ckanext.spatial.common_map.type = custom
+ckanext.spatial.common_map.custom.url = http://tiles.maps.sputnik.ru/{z}/{x}/{y}.png
+ckanext.spatial.common_map.custom.name = Карта Спутник
+ckanext.spatial.common_map.attribution = © <a href="http://sputnik.ru">Спутник</a> | © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>
 
 
 Исправления текущего кода
 -------------------------
+
+.. TODO:
 
 
 Открытие портов
@@ -608,6 +625,19 @@ Backup и Restore
 Данные процедуры описаны в разделе
 `db: Manage databases <http://docs.ckan.org/en/latest/maintaining/paster.html#db-manage-databases>`_
 официальной документации.
+
+Если CKAN и NextGIS Web были развёрнуты на одной машине, то при переносе
+этой связки на другой адрес - необходимо изменить адреса ресурсов
+NextGIS Web на новые. Проще всего это сделать, отредактировав файл
+с бэкапом CKAN до момента его восставновления, например:
+
+.. code:: bash
+
+    sed -i 's:78.46.100.76/opendata_ngw:82.162.194.216/ngw:g' ckan.pg_dump
+
+Если вы используете DataStore, то помимо переноса базы самого CKAN,
+необходимо переносить и базу данных DataStore, ``datastore_default``
+в нашем случае.
 
 .. warning::
    Если после восстановления данных из архива отображается, что
