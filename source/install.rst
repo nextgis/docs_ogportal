@@ -364,8 +364,8 @@ PostgreSQL при старте системы:
     ckan.datapusher.url = http://127.0.0.1:8800/
 
 
-Ссылка на ``who.ini``
----------------------
+Ссылка на who.ini
+-----------------
 
 Файл ``who.ini`` (конфигурационный файл Repoze.who) должен располагаться
 в той же директории, что и конфигурационный файл CKAN:
@@ -595,11 +595,13 @@ PostgreSQL при старте системы:
 
 .. TODO:
 
-# Settings for ckanext-geoview extension
-ckanext.spatial.common_map.type = custom
-ckanext.spatial.common_map.custom.url = http://tiles.maps.sputnik.ru/{z}/{x}/{y}.png
-ckanext.spatial.common_map.custom.name = Карта Спутник
-ckanext.spatial.common_map.attribution = © <a href="http://sputnik.ru">Спутник</a> | © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>
+.. code:: bash
+
+    # Settings for ckanext-geoview extension
+    ckanext.spatial.common_map.type = custom
+    ckanext.spatial.common_map.custom.url = http://tiles.maps.sputnik.ru/{z}/{x}/{y}.png
+    ckanext.spatial.common_map.custom.name = Карта Спутник
+    ckanext.spatial.common_map.attribution = © <a href="http://sputnik.ru">Спутник</a> | © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>
 
 
 Исправления текущего кода
