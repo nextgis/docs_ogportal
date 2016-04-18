@@ -576,6 +576,12 @@ PostgreSQL при старте системы:
     sudo chown ckan:ckan /etc/ckan/datapusher.wsgi
     sudo chown ckan:ckan /etc/ckan/datapusher_settings.py
 
+В файле ``datapusher_settings.py`` допишите строку:
+
+.. code:: bash
+
+    MAX_CONTENT_LENGTH = 1073741824
+
 Подготавливаем uWSGI:
 
 .. code:: bash
@@ -587,13 +593,48 @@ PostgreSQL при старте системы:
 
 В файл ``datapusher.ini`` помещаем следующее содержимое:
 
-.. TODO:
+.. code:: bash
+
+    [uwsgi]
+
+    plugins = python
+
+    master = true
+    workers = 1
+    no-orphans = true
+
+    pidfile = /run/uwsgi/%n.pid
+    socket = :8800
+    protocol = http
+
+    logto = /var/log/uwsgi/%n.log
+    log-date = true
+
+    harakiri = 6000
+
+    wsgi-file = /etc/ckan/datapusher.wsgi
 
 
 Установка расширения ckanext-geoview
 ------------------------------------
 
-.. TODO:
+Данное расширение предоставляет набор плагинов, позволяющих осуществлять
+предпросмотр опубликованных ресурсов прямо в браузере.
+
+Оригинальная версия данного расширения не содержит некоторых нужных
+нам возможностей, поэтому была выполнена его доработка. В связи с этим
+устанавливать его мы будем из собственного репозитория:
+
+.. code:: bash
+
+    sudo su -s /bin/bash - ckan
+    . default/bin/activate
+    cd default/src
+    git clone https://github.com/nextgis/ckanext-geoview.git
+    pip install -e ./ckanext-geoview
+
+Изменим стандартную подложку, для этого в файл ``development.ini`` добавим
+следующие строки:
 
 .. code:: bash
 
@@ -607,7 +648,7 @@ PostgreSQL при старте системы:
 Исправления текущего кода
 -------------------------
 
-.. TODO:
+.. TODO: https://github.com/nextgis/nextgisweb_opendata/issues/20#issuecomment-172212046
 
 
 Открытие портов
