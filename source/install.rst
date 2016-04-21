@@ -601,6 +601,7 @@ PostgreSQL при старте системы:
 
     master = true
     workers = 1
+    threads = 5
     no-orphans = true
 
     pidfile = /run/uwsgi/%n.pid
@@ -644,8 +645,8 @@ PostgreSQL при старте системы:
     ckanext.spatial.common_map.attribution = © <a href="http://sputnik.ru">Спутник</a> | © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>
 
 
-Исправления текущего кода
--------------------------
+Исправления текущего кода DataStore и DataPusher
+------------------------------------------------
 
 Откроем файл ``commas.py``:
 
@@ -727,6 +728,15 @@ PostgreSQL при старте системы:
                 full_text.extend(json_get_values(value))
         return ' '.join(set(full_text))
 
+Увеличим таймаут в файле ``jobs.py``:
+
+.. code:: bash
+
+    cd /usr/lib/ckan/datapusher/src/datapusher/datapusher
+    nano jobs.py
+
+Вместо ``DOWNLOAD_TIMEOUT = 30`` выставьте ``DOWNLOAD_TIMEOUT = 5 * 60``.
+
 .. warning::
    Проблемы с которыми мы солкнулись при загрузке CSV в DataStore.
    В некоторых полях был текст ``NULL``, но по первой записи DataStore
@@ -734,6 +744,13 @@ PostgreSQL при старте системы:
    В некоторых полях в качестве разделителя разрядов была ``,``.
    Исправляется путём редактирования соответствующих ресурсов NextGIS Web.
 
+При загрузке данных всегда сверяйте количество загруженных объектов
+и фактическое количество объектов в слое. Количество объектов в слое
+можно получить по API (подставьте свой идентификатор ресурса):
+
+.. code:: bash
+
+    http://82.162.194.216/ngw/api/resource/167/feature_count
 
 Открытие портов
 ---------------
