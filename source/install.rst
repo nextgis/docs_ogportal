@@ -716,8 +716,10 @@ PostgreSQL при старте системы:
             if not value:
                 continue
 
-            if unicode(value).startswith('MULTI'):
-                continue
+            if 'POINT' in unicode(value) or \
+               'LINESTRING' in unicode(value) or \
+               'POLYGON' in unicode(value):
+                    continue
 
             if field['type'].lower() in ft_types and unicode(value):
                 full_text.append(unicode(value))
