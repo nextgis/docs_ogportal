@@ -604,8 +604,7 @@ PostgreSQL при старте системы:
     no-orphans = true
 
     pidfile = /run/uwsgi/%n.pid
-    socket = :8800
-    protocol = http
+    http-socket = 127.0.0.1:8800
 
     logto = /var/log/uwsgi/%n.log
     log-date = true
@@ -648,7 +647,90 @@ PostgreSQL при старте системы:
 Исправления текущего кода
 -------------------------
 
-.. TODO: https://github.com/nextgis/nextgisweb_opendata/issues/20#issuecomment-172212046
+Откроем файл ``commas.py``:
+
+.. code:: bash
+
+    cd /usr/lib/ckan/datapusher/lib/python2.7/site-packages/messytables
+    nano commas.py
+
+И отредактируем следующую строку. Вместо:
+
+.. code:: bash
+
+    # Fix the maximum field size to something a little larger
+    csv.field_size_limit(256000)
+
+должно быть:
+
+.. code:: bash
+
+    # Fix the maximum field size to something a little larger
+    csv.field_size_limit(100 * 1024 * 1024)
+
+На данный момент в CKAN DataStore нет возможности исключить поле из
+индекса на основе его имени,
+см. `#2837 <https://github.com/ckan/ckan/issues/2837>`_, поэтому
+(как временное решение) отключим текстовые поля для индексации.
+В противном случае DataStore пытается построить индекс для поля
+с WKT геометрией (если такое поле есть в CSV) и падает.
+Откроем файл ``helpers.py``:
+
+.. code:: bash
+
+    cd /usr/lib/ckan/default/src/ckan/ckanext/datastore
+    nano helpers.py
+
+И отредактируем следующий фрагмент. Вместо:
+
+.. code:: bash
+
+    def should_fts_index_field_type(field_type):
+        return field_type.lower() in ['tsvector', 'text', 'number']
+
+должно быть:
+
+.. code:: bash
+
+    def should_fts_index_field_type(field_type):
+        return field_type.lower() in ['tsvector', 'number']
+
+Сделаем ещё одно исправление для отключения включения WKT в
+полнотекстовый поиск. Откроем файл ``db.py``:
+
+.. code:: bash
+
+    cd /usr/lib/ckan/default/src/ckan/ckanext/datastore
+    nano db.py
+
+И отредактируем функцию ``_to_full_text``:
+
+.. code:: python
+
+    def _to_full_text(fields, record):
+        full_text = []
+        ft_types = ['int8', 'int4', 'int2', 'float4', 'float8', 'date', 'time',
+                    'timetz', 'timestamp', 'numeric', 'text']
+        for field in fields:
+            value = record.get(field['id'])
+            if not value:
+                continue
+
+            if unicode(value).startswith('MULTI'):
+                continue
+
+            if field['type'].lower() in ft_types and unicode(value):
+                full_text.append(unicode(value))
+            else:
+                full_text.extend(json_get_values(value))
+        return ' '.join(set(full_text))
+
+.. warning::
+   Проблемы с которыми мы солкнулись при загрузке CSV в DataStore.
+   В некоторых полях был текст ``NULL``, но по первой записи DataStore
+   определял, что это ``numeric``, и когда доходил до ``NULL`` - падал.
+   В некоторых полях в качестве разделителя разрядов была ``,``.
+   Исправляется путём редактирования соответствующих ресурсов NextGIS Web.
 
 
 Открытие портов
@@ -659,6 +741,14 @@ PostgreSQL при старте системы:
 .. code:: bash
 
     sudo firewall-cmd --zone=public --add-port=80/tcp --permanent
+    sudo firewall-cmd --reload
+
+Если с локального хоста CKAN недоступен по своему публичному адресу,
+то это может быть исправлено, например, так:
+
+.. code:: bash
+
+    sudo firewall-cmd --direct --add-rule ipv4 nat OUTPUT 0 -d 82.162.194.216 -p tcp --dport 80 -j DNAT --to-destination 127.0.0.1:80 --permanent
     sudo firewall-cmd --reload
 
 
