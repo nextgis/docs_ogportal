@@ -795,3 +795,93 @@ NextGIS Web на новые. Проще всего это сделать, отр
    Если после восстановления данных из архива отображается, что
    число наборов данных равно ``0``, то поможет
    `переиндексация <http://docs.ckan.org/en/latest/maintaining/paster.html#search-index-rebuild-search-index>`_.
+
+
+Дополнительно
+-------------
+
+Конфигурационный файл uWSGI для NextGIS Web:
+
+
+.. code:: bash
+
+    [uwsgi]
+
+    plugins = python
+
+    master = true
+    workers = 4
+    no-orphans = true
+
+    pidfile = /run/uwsgi/%n.pid
+    socket = /run/uwsgi/%n.sock
+    chmod-socket = 666
+
+    logto = /var/log/uwsgi/%n.log
+    log-date = true
+
+    limit-post = 7516192768
+
+    harakiri = 6000
+    socket-timeout = 6000
+
+    env = PASTE_CONFIG=/opt/ngw/development.ini
+    env = LANG=ru_RU.UTF-8
+
+    home = /opt/ngw/env
+    mount = /ngw=/opt/ngw/nextgisweb/nextgisweb/uwsgiapp.py
+    manage-script-name = true
+
+
+Конфигурационный файл Nginx:
+
+.. code:: bash
+
+    uwsgi_cache_path /var/lib/nginx/cache levels=1:2 keys_zone=cache:30m max_size=250m;
+
+    server {
+          listen                      80;
+          server_name                 82.162.194.216;
+          client_max_body_size        6G;
+          large_client_header_buffers 8 32k;
+
+          location /ckan {
+            uwsgi_read_timeout 600s;
+            uwsgi_send_timeout 600s;
+
+            include            uwsgi_params;
+            uwsgi_pass         unix:/run/uwsgi/ckan.sock;
+
+            proxy_redirect     off;
+            proxy_set_header   Host $host;
+            proxy_set_header   X-Real-IP $remote_addr;
+            proxy_set_header   X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header   X-Forwarded-Host $server_name;
+
+            # Cache stuff
+            uwsgi_cache        cache;
+            uwsgi_cache_bypass $cookie_auth_tkt;
+            uwsgi_no_cache     $cookie_auth_tkt;
+            uwsgi_cache_valid  30m;
+            uwsgi_cache_key    $host$scheme$proxy_host$request_uri;
+        }
+
+        location /ngw {
+            uwsgi_read_timeout 600s;
+            uwsgi_send_timeout 600s;
+
+            include            uwsgi_params;
+            uwsgi_pass         unix:/run/uwsgi/ngw.sock;
+
+            proxy_redirect     off;
+            proxy_set_header   Host $host;
+            proxy_set_header   X-Real-IP $remote_addr;
+            proxy_set_header   X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header   X-Forwarded-Host $server_name;
+        }
+
+        location /opendata_map {
+            index index.html index.htm;
+            root /var/www;
+        }
+    }
