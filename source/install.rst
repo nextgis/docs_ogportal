@@ -457,6 +457,7 @@ PostgreSQL при старте системы:
     [uwsgi]
 
     plugins = python
+    lazy-apps = true
 
     master = true
     workers = 4
@@ -803,6 +804,7 @@ NextGIS Web на новые. Проще всего это сделать, отр
     [uwsgi]
 
     plugins = python
+    lazy-apps = true
 
     master = true
     workers = 4
