@@ -516,7 +516,7 @@ PostgreSQL при старте системы:
 
 .. code:: bash
 
-    uwsgi_cache_path /var/lib/nginx/cache levels=1:2 keys_zone=cache:30m max_size=250m;
+    uwsgi_cache_path /var/lib/nginx/cache levels=1:2 keys_zone=ckan:30m max_size=250m;
 
     server {
           listen               80;
@@ -530,18 +530,13 @@ PostgreSQL при старте системы:
             include            uwsgi_params;
             uwsgi_pass         unix:/run/uwsgi/ckan.sock;
 
-            proxy_redirect     off;
-            proxy_set_header   Host $host;
-            proxy_set_header   X-Real-IP $remote_addr;
-            proxy_set_header   X-Forwarded-For $proxy_add_x_forwarded_for;
-            proxy_set_header   X-Forwarded-Host $server_name;
-
             # Cache stuff
-            uwsgi_cache        cache;
-            uwsgi_cache_bypass $cookie_auth_tkt;
-            uwsgi_no_cache     $cookie_auth_tkt;
-            uwsgi_cache_valid  30m;
-            uwsgi_cache_key    $host$scheme$proxy_host$request_uri;
+            uwsgi_cache         ckan;
+            uwsgi_cache_methods GET HEAD;
+            uwsgi_cache_bypass  $cookie_auth_tkt;
+            uwsgi_no_cache      $cookie_auth_tkt;
+            uwsgi_cache_valid   30m;
+            uwsgi_cache_key     $host$scheme$proxy_host$request_uri;
         }
     }
 
@@ -837,7 +832,8 @@ NextGIS Web на новые. Проще всего это сделать, отр
 
 .. code:: bash
 
-    uwsgi_cache_path /var/lib/nginx/cache levels=1:2 keys_zone=cache:30m max_size=250m;
+    uwsgi_cache_path /var/lib/nginx/cache levels=1:2 keys_zone=ckan:30m max_size=250m;
+    uwsgi_cache_path /mnt/portal/ngw/cache levels=1:2 keys_zone=ngw:30m max_size=10g inactive=7d;
 
     server {
           listen                      80;
@@ -852,18 +848,13 @@ NextGIS Web на новые. Проще всего это сделать, отр
             include            uwsgi_params;
             uwsgi_pass         unix:/run/uwsgi/ckan.sock;
 
-            proxy_redirect     off;
-            proxy_set_header   Host $host;
-            proxy_set_header   X-Real-IP $remote_addr;
-            proxy_set_header   X-Forwarded-For $proxy_add_x_forwarded_for;
-            proxy_set_header   X-Forwarded-Host $server_name;
-
             # Cache stuff
-            uwsgi_cache        cache;
-            uwsgi_cache_bypass $cookie_auth_tkt;
-            uwsgi_no_cache     $cookie_auth_tkt;
-            uwsgi_cache_valid  30m;
-            uwsgi_cache_key    $host$scheme$proxy_host$request_uri;
+            uwsgi_cache         ckan;
+            uwsgi_cache_methods GET HEAD;
+            uwsgi_cache_bypass  $cookie_auth_tkt;
+            uwsgi_no_cache      $cookie_auth_tkt;
+            uwsgi_cache_valid   30m;
+            uwsgi_cache_key     $host$scheme$proxy_host$request_uri;
         }
 
         location /ngw {
@@ -873,11 +864,15 @@ NextGIS Web на новые. Проще всего это сделать, отр
             include            uwsgi_params;
             uwsgi_pass         unix:/run/uwsgi/ngw.sock;
 
-            proxy_redirect     off;
-            proxy_set_header   Host $host;
-            proxy_set_header   X-Real-IP $remote_addr;
-            proxy_set_header   X-Forwarded-For $proxy_add_x_forwarded_for;
-            proxy_set_header   X-Forwarded-Host $server_name;
+            # Cache stuff
+            uwsgi_cache          ngw;
+            uwsgi_cache_methods  GET HEAD;
+            uwsgi_cache_bypass   $cookie_tkt;
+            uwsgi_no_cache       $cookie_tkt;
+            uwsgi_cache_valid    7d;
+            uwsgi_ignore_headers Expires Cache-Control Set-Cookie;
+            uwsgi_cache_key      $host$scheme$proxy_host$request_uri;
+            add_header           X-uWSGI-Cache $upstream_cache_status;
         }
 
         location /opendata_map {
