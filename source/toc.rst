@@ -12,5 +12,7 @@
 
    intro
    install
+   editor
+   user
 
 
