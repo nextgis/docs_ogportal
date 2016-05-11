@@ -44,7 +44,7 @@
 2. Адрес портала - _________
 3. Манипулятор "Мышь" или аналог.
 
-1. Откройте в веб-браузере ссылку.
+1. Откройте в веб-браузере ссылку. Вы увидите главную страницу портала (см. :numref:`ogportalCKANUserIndex`). Нажмите на ссылку "Пакеты данных" или "Наборы данных".
 
 
 .. figure:: _static/ogportalCKANUserIndex.png
@@ -54,7 +54,7 @@
 
    Главная страница портала.
 
-2. Нажмите на ссылку "Пакеты данных" или "Наборы данных".
+2. Вы увидите список массивов данных. Нажимайте на название нужного вам массива данных.  (см. :numref:`ogportalCKANUserPacketsPage`). 
 
 
 .. figure:: _static/ogportalCKANUserPacketsPage.png
@@ -64,23 +64,41 @@
 
    Список пакетов данных
 
-3. Вы увидите список пакетов данных. Нажимайте на название нужного вам.
+3. В массиве данных находятся ресурсы. Вы увидите их список. Каждый набор данных представлен в нескольких форматах - эти форматы обозначаются значком слева: JSON, GeoJSON, Data, CSV.  Выберите нужный вам набор данных, (см. :numref:`ogportalCKANUserResourcesPage`)  и нажмите на GeoJSON (см. :numref:`ogportalCKANGeoJSONIcon`). Этот формат наиболее удобно отображается в браузере. 
 
-   Список массивов данныъ
 
-4. В массиве данных находятся наборы данных. Вы увидите их список. Каждый набор представлен в нескольких форматах - эти форматы обозначаются значком слева: JSON, GeoJSON, Data, CSV. 
+.. figure:: _static/ogportalCKANUserResourcesPage.png
+   :name: ogportalCKANUserResourcesPage
+   :align: center
+   :width: 16cm
 
-   Список наборов данных.
+   Список ресурсов в массиве данных
 
-5. Выберите нужный вам набор данных, и нажмите на GeoJSON. Этот формат наиболее удобно показыается на сайте.
 
-   Выберите объект с таким значком.
+.. figure:: _static/ogportalCKANGeoJSONIcon.png
+   :name: ogportalCKANGeoJSONIcon
+   :align: center
 
-6. На экране появится карта. Синим цветом на ней обозначены данные набора. 
+   Иконка GeoJSON (перенести в текст)
+
+
+6. На экране появится карта (см. :numref:`ogportalCKANUserGeojsonWebmap`). Синим цветом на ней обозначены данные набора. 
+
+.. figure:: _static/ogportalCKANUserGeojsonWebmap.png
+   :name: ogportalCKANUserGeojsonWebmap
+   :align: center
+   :width: 16cm
 
    Пример карты с наложенными данными.
 
-7. При необходимости, можно нажать мышкой на наложенные объекты, тогда на экране появится окно с таблицей атрибутов объекта. Этот процесс называется идентификацией.
+   
+
+7. При необходимости просмотреть атрибуты объекта нажмите мышкой на объект, тогда на экране появится окно с таблицей атрибутов объекта (см. :numref:`ogportalCKANUserGeojsonWebmapIdentify`). Этот процесс называется идентификацией.
+
+.. figure:: _static/ogportalCKANUserGeojsonWebmapIdentify.png
+   :name: ogportalCKANUserGeojsonWebmapIdentify
+   :align: center
+   :width: 16cm
 
    Идентификация.
 
