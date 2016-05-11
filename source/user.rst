@@ -5,21 +5,6 @@
 Инструкция по использованию портала
 ==============================================
 
----------
-
-<дропнуть>
-Текст с простыми формулировками.
-
-
-Открытые данные — концепция, отражающая идею о том, что определённые данные должны быть свободно доступны для машиночитаемого использования и дальнейшей републикации без ограничений авторского права, патентов и других механизмов контроля. Освободить данные от ограничений авторского права можно с помощью свободных лицензий, таких как лицензий Creative Commons. Если какой-либо набор данных не является общественным достоянием, либо не связан лицензией, дающей права на свободное повторное использование, то такой набор данных не считается открытым, даже если он выложен в машиночитаемом виде в Интернет. fixme ссылку на википедию, потому что это тоже открытые данные.
-
-Их могут использовать как граждане, для того что бы чего-нибудь узнать, так и организации. 
-Публикация таких открытых данных положенна по закону, и они имеют лицензии.
-
-На портале открытых данных такие данные собранны в одном месте, их можно скачивать в разных форматах
-</дропнуть>
-
----------
 
 На этом сервисе распространяются векторные геоданные - файлы с географическими точками или контурами разных объектов. Вы можете их смотреть в браузере, или скачивать в виде файлов. Распространяются они в стандартных машинно-читаемые форматы, поддерживаемые современным софтом: NextGIS QGIS, ArcGIS, библиотеками GDAL.
 
@@ -108,10 +93,20 @@
 
 1. Откройте данные в формате CSV
 
-   Нажмите на эту ссылку
+
+.. figure:: _static/ogportalCKANCSVIcon.png
+   :name: ogportalCKANCSVIcon
+   :align: center
+
+   Иконка CSV (перенести в текст)
+
+2. На экране появится таблица данных (см. :numref:`ogportalCKANUserDataTable`)
 
 
-
+.. figure:: _static/ogportalCKANUserDataTable.png
+   :name: ogportalCKANUserDataTable
+   :align: center
+   :width: 16cm
 
    Просмотр данных в таблице
 
@@ -121,9 +116,15 @@
 -----------------------------------------------------------------
 
 Выберите нужный вам набор данных, и нажмите на значок нужного формата. Если у вас нет специальных требований - выбирайте формат GeoJSON, он открывается современными программами, и не вносит ограничения на данные.
-На странице, сверху карты будет ссылка на скачивание файла.
+На странице будет ссылка на скачивание файла.
 
-   Ссылка на скачивание карты (http://78.46.100.76/opendata/dataset/moi-dokumenty/resource/14a3d4ca-abfd-407e-810e-b8a9558f1d1d)
+
+.. figure:: _static/ogportalCKANDownloadGeoJSONLink.png
+   :name: ogportalCKANDownloadGeoJSONLink
+   :align: center
+   :width: 16cm
+
+   Ссылка на скачивание карты
 
 Как открыть данные в машинно-читаемом формате на компьютере?
 --------------------------------------------------------------------
@@ -132,11 +133,33 @@
 
 1. Сохраните файл в GeoJSON
 2. Откройте QGIS
-3. Нажмите "Добавить векторный слой".
+3. Нажмите :menuselection:`Слой --> Добавить слой --> Добавить векторный слой`. (см. :numref:`ogportalQGISOpenGeoJSON1`). (см. :numref:`ogportalQGISOpenGeoJSON2`) В диалоге выберите скачанный вами файл GeoJSON (см. :numref:`ogportalQGISOpenGeoJSON3`).
+
+
+.. figure:: _static/LREGQGISOpenShape1.png
+   :name: ogportalQGISOpenGeoJSON1
+   :align: center
+   :width: 16cm
+
+.. figure:: _static/LREGQGISOpenShape2.png
+   :name: ogportalQGISOpenGeoJSON2
+   :align: center
+   :width: 16cm
+
+.. figure:: _static/ogportalQGISOpenGeoJSON3.png
+   :name: ogportalQGISOpenGeoJSON3
+   :align: center
+   :width: 16cm
 
    Интерфейс QGIS 
 
-5. Откройте таблицу атрибутов, выбрав в меню Слой --> Таблица атрибутов.
+5. Выделите слой в списке слоёв и откройте таблицу атрибутов, выбрав в меню :menuselection:`Слой` ---> `Таблица атрибутов` (см. :numref:`ogportalQGISOpenGeoJSON4`).
+
+.. figure:: _static/ogportalQGISOpenGeoJSON4.png
+   :name: ogportalQGISOpenGeoJSON4
+   :align: center
+   :width: 16cm
+
 
    Слой данных и таблица атрибутов
 
@@ -149,7 +172,16 @@
 
 Скачайте данные в формате ESRI Shapefile (значок DATA). В этом формате данные распространяются в zip-архиве, его нужно распаковать, и открыть в вашей программе файл .shp. GDAL открывает сам zip. 
 
+.. figure:: _static/ogportalCKANSHPIcon.png
+   :name: ogportalCKANSHPIcon
+   :align: center
+
    Нажмите на эту ссылку
+
+.. figure:: _static/ogportalSHPZip.png
+   :name: ogportalSHPZip
+   :align: center
+   :width: 16cm
 
    Содержимое архива
 
@@ -159,12 +191,26 @@
 
 1. Скачайте данные в формате CSV
 
-   Нажмите на эту ссылку
+
+.. figure:: _static/ogportalCKANCSVIcon.png
+   :name: ogportalCKANCSVIcon
+   :align: center
+
+   Иконка CSV (перенести в текст)
 
 2. Откройте файл в редакторе электронных таблиц. Укажите разделитель - запятая, и кодировку - Юникод (UTF-8). 
 
+.. figure:: _static/ogportalCalcOpenCSV.png
+   :name: ogportalCalcOpenCSV
+   :align: center
+   :width: 16cm
 
    Открытие CSV в Open Office Calc
+
+.. figure:: _static/ogportalCalc.png
+   :name: ogportalCalc
+   :align: center
+   :width: 16cm
 
    Пример таблицы в Open Office Calc
 
