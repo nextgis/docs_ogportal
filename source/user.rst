@@ -46,13 +46,25 @@
 
 1. Откройте в веб-браузере ссылку.
 
+
+.. figure:: _static/ogportalCKANUserIndex.png
+   :name: ogportalCKANUserIndex
+   :align: center
+   :width: 16cm
+
    Главная страница портала.
 
-2. Зайдите в раздел "Пакеты данных".
+2. Нажмите на ссылку "Пакеты данных" или "Наборы данных".
+
+
+.. figure:: _static/ogportalCKANUserPacketsPage.png
+   :name: ogportalCKANUserPacketsPage
+   :align: center
+   :width: 16cm
 
    Список пакетов данных
 
-3. Вы увидите список массивов данных. Нажимайте на название нужного вам.
+3. Вы увидите список пакетов данных. Нажимайте на название нужного вам.
 
    Список массивов данныъ
 
