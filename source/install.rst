@@ -882,3 +882,10 @@ NextGIS Web на новые. Проще всего это сделать, отр
             root /var/www;
         }
     }
+
+
+Пример удаления записей из кэша Nginx по маске:
+
+.. code:: bash
+
+    grep -lr 'ngw/api/resource/604*' /mnt/portal/ngw/cache/* | xargs rm -rf
