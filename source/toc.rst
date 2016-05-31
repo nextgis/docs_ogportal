@@ -2,7 +2,7 @@
 
 .. NextGIS open geodata portal TOC
 
-Документация NextGIS Портал открытых геоданных
+NextGIS Opengeodata portal documentation
 ==============================================
 
 Содержание:
