@@ -72,7 +72,6 @@
 
    Веб-интерфейс NextGIS Web. 1 - ссылка на авторизацию.
 
-
 2. В середине экрана расположен список под названием "Дочерние ресурсы". В нём выберите 
    и откройте группу ресурсов "Открытые данные" --> "Векторные данные". Выберите в группе ресурсов 
    нужный раздел или создайте новый ссылкой "Создать ресурс" --> "Группа ресурсов".
@@ -91,7 +90,7 @@
 .. figure:: _static/admin_layers_create_vector_layer_resourse_description.png
    :name: admin_layers_create_vector_layer_resourse_description
    :align: center
-   :width: 16cm
+   :width: 15cm
 
    Окно добавления векторного слоя.
 
@@ -101,7 +100,7 @@
 .. figure:: _static/admin_layers_create_vector_layer_upload.png
    :name: admin_layers_create_vector_layer_upload
    :align: center
-   :width: 16cm
+   :width: 15cm
 
    Окно загрузки векторного слоя.
 
@@ -122,26 +121,23 @@
    для отображения по протоколу WMS. Выберите векторный слой. Нажмите ссылку 
    "Создать MapServer style". 
 
-
 .. figure:: _static/ogportalNGWCreateVectorStyle1.png
    :name: ogportalNGWCreateVectorStyle1
    :align: center
-   :width: 16cm
-
+   :width: 15cm
 
 .. figure:: _static/ogportalNGWCreateVectorStyle2.png
    :name: ogportalNGWCreateVectorStyle2
    :align: center
-   :width: 16cm
+   :width: 15cm
 
 Введите то же наименование, что и у слоя. 
 Нажмите Создать. 
 
-
 .. figure:: _static/ogportalNGWCreateVectorStyle3.png
    :name: ogportalNGWCreateVectorStyle3
    :align: center
-   :width: 16cm
+   :width: 15cm
 
    Создание векторного стиля для слоя.
 
@@ -157,7 +153,7 @@
 .. figure:: _static/ogportalNGWCreateWFS1.png
    :name: ogportalNGWCreateWFS1
    :align: center
-   :width: 16cm
+   :width: 15cm
 
    Выбор сервиса/протокола для размещения данных.
 
@@ -167,7 +163,7 @@
 .. figure:: _static/ogportalNGWCreateWFS2.png
    :name: ogportalNGWCreateWFS2
    :align: center
-   :width: 16cm
+   :width: 15cm
 
    Создание Сервиса WFS.
 
@@ -177,7 +173,7 @@
 .. figure:: _static/ogportalNGWCreateWFS3.png
    :name: ogportalNGWCreateWFS3
    :align: center
-   :width: 16cm
+   :width: 15cm
 
    Список ресурсов.
 
@@ -189,7 +185,7 @@
 .. figure:: _static/ogportalNGWCreateWFS4.png
    :name: ogportalNGWCreateWFS4
    :align: center
-   :width: 16cm
+   :width: 15cm
 
    Выбор слоя и присвоение слою ключа латинскими буквами.
 
@@ -204,7 +200,7 @@
 .. figure:: _static/ogportalCKANInterface1.png
    :name: ogportalCKANInterface1
    :align: center
-   :width: 16cm
+   :width: 15cm
 
    Веб-интерфейс :program:`CKAN`.
 
@@ -219,7 +215,7 @@
 .. figure:: _static/ogportalADDGeoJSON.png
    :name: ogportalADDGeoJSON
    :align: center
-   :width: 16cm
+   :width: 15cm
 
    Копирование адреса ссылки для скачивания файла формата GeoJSON.
 
@@ -227,11 +223,10 @@
 Справа страницы найдите ссылку "Загрузить GeoJSON", нажмите на неё правой кнопкой мыши, нажмите :guilabel:`Скопировать адрес ссылки`.
 В CKAN нажмите :guilabel:`Add new resource`.
 
-
 .. figure:: _static/ogportalADDGeoJSON2.png
    :name: ogportalADDGeoJSON2
    :align: center
-   :width: 16cm
+   :width: 15cm
 
    Заполнение формы для скачивания данных (в данном случае файл формата GeoJSON).
 
@@ -245,7 +240,6 @@
 
 Форматы
 ::::::::::::::::::::::::::::::
-
 
 1. :term:`GeoJSON`. В NextGIS WEB наведите мышью на ссылку "Загрузить GeoJSON". Нажмите правую кнопку --> Скопировать ссылку. Добавьте в :program:`CKAN` новый ресурс, добавьте ссылку, имя, укажите формат GeoJSON.
 2. :term:`JSON`. В NextGIS WEB наведите мышью на ссылку "Представление JSON". Нажмите правую кнопку --> Скопировать ссылку. Добавьте в :program:`CKAN` новый ресурс, добавьте ссылку, имя, укажите формат JSON.
@@ -269,21 +263,21 @@
 .. figure:: _static/ogportalNGWAccess1.png
    :name: ogportalNGWAccess1
    :align: center
-   :width: 16cm
+   :width: 15cm
 
    Настройка прав у корневой группы ресурсов.
 
 .. figure:: _static/ogportalNGWAccess2.png
    :name: ogportalNGWAccess2
    :align: center
-   :width: 16cm
+   :width: 15cm
 
    Настройка прав у группы ресурсов Открытые данные.
 
 .. figure:: _static/ogportalNGWAccess3.png
    :name: ogportalNGWAccess3
    :align: center
-   :width: 16cm
+   :width: 15cm
 
    Настройка прав у группы ресурсов Векторные данные.
 

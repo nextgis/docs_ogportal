@@ -37,17 +37,16 @@
 .. figure:: _static/ogportalCKANUserIndex.png
    :name: ogportalCKANUserIndex
    :align: center
-   :width: 16cm
+   :width: 15cm
 
    Главная страница портала.
 
 2. Вы увидите список массивов данных. Выберите название нужного вам массива данных.  (см. :numref:`ogportalCKANUserPacketsPage`). 
 
-
 .. figure:: _static/ogportalCKANUserPacketsPage.png
    :name: ogportalCKANUserPacketsPage
    :align: center
-   :width: 16cm
+   :width: 15cm
 
    Список пакетов данных.
 
@@ -61,10 +60,9 @@ GeoJSON, Data, CSV.  Выберите нужный вам набор данны�
 .. figure:: _static/ogportalCKANUserResourcesPage.png
    :name: ogportalCKANUserResourcesPage
    :align: center
-   :width: 16cm
+   :width: 15cm
 
    Список ресурсов в массиве данных.
-
 
 .. figure:: _static/ogportalCKANGeoJSONIcon.png
    :name: ogportalCKANGeoJSONIcon
@@ -72,14 +70,13 @@ GeoJSON, Data, CSV.  Выберите нужный вам набор данны�
 
    Иконка GeoJSON (перенести в текст).
 
-
 6. На экране появится карта (см. :numref:`ogportalCKANUserGeojsonWebmap`). Синим 
 цветом на ней обозначены данные набора. 
 
 .. figure:: _static/ogportalCKANUserGeojsonWebmap.png
    :name: ogportalCKANUserGeojsonWebmap
    :align: center
-   :width: 16cm
+   :width: 15cm
 
    Пример карты с наложенными данными.
 
@@ -90,7 +87,7 @@ GeoJSON, Data, CSV.  Выберите нужный вам набор данны�
 .. figure:: _static/ogportalCKANUserGeojsonWebmapIdentify.png
    :name: ogportalCKANUserGeojsonWebmapIdentify
    :align: center
-   :width: 16cm
+   :width: 15cm
 
    Идентификация.
 
@@ -110,7 +107,7 @@ GeoJSON, Data, CSV.  Выберите нужный вам набор данны�
 .. figure:: _static/ogportalCKANUserDataTable.png
    :name: ogportalCKANUserDataTable
    :align: center
-   :width: 16cm
+   :width: 15cm
 
    Просмотр данных в таблице.
 
@@ -125,7 +122,7 @@ GeoJSON, Data, CSV.  Выберите нужный вам набор данны�
 .. figure:: _static/ogportalCKANDownloadGeoJSONLink.png
    :name: ogportalCKANDownloadGeoJSONLink
    :align: center
-   :width: 16cm
+   :width: 15cm
 
    Ссылка на скачивание карты.
 
@@ -141,25 +138,24 @@ GeoJSON, Data, CSV.  Выберите нужный вам набор данны�
 3. Нажмите :menuselection:`Слой --> Добавить слой --> Добавить векторный слой`. (см. :numref:`ogportalQGISOpenGeoJSON1`), (см. :numref:`ogportalQGISOpenGeoJSON2`). 
 В диалоге выберите скачанный вами файл в формате GeoJSON (см. :numref:`ogportalQGISOpenGeoJSON3`).
 
-
 .. figure:: _static/LREGQGISOpenShape1.png
    :name: ogportalQGISOpenGeoJSON1
    :align: center
-   :width: 16cm
+   :width: 15cm
 
    Добавление векторного слоя. 
 
 .. figure:: _static/LREGQGISOpenShape2.png
    :name: ogportalQGISOpenGeoJSON2
    :align: center
-   :width: 16cm
+   :width: 15cm
 
    Добавление векторного слоя.
  
 .. figure:: _static/ogportalQGISOpenGeoJSON3.png
    :name: ogportalQGISOpenGeoJSON3
    :align: center
-   :width: 16cm
+   :width: 15cm
 
    Интерфейс QGIS. 
 
@@ -168,7 +164,7 @@ GeoJSON, Data, CSV.  Выберите нужный вам набор данны�
 .. figure:: _static/ogportalQGISOpenGeoJSON4.png
    :name: ogportalQGISOpenGeoJSON4
    :align: center
-   :width: 16cm
+   :width: 15cm
 
    Слой данных и таблица атрибутов.
 
@@ -190,7 +186,7 @@ GeoJSON, Data, CSV.  Выберите нужный вам набор данны�
 .. figure:: _static/ogportalSHPZip.png
    :name: ogportalSHPZip
    :align: center
-   :width: 16cm
+   :width: 15cm
 
    Содержимое архива.
 
@@ -211,14 +207,14 @@ GeoJSON, Data, CSV.  Выберите нужный вам набор данны�
 .. figure:: _static/ogportalCalcOpenCSV.png
    :name: ogportalCalcOpenCSV
    :align: center
-   :width: 16cm
+   :width: 15cm
 
    Открытие CSV в Open Office Calc.
 
 .. figure:: _static/ogportalCalc.png
    :name: ogportalCalc
    :align: center
-   :width: 16cm
+   :width: 15cm
 
    Пример таблицы в Open Office Calc.
 
