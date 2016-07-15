@@ -159,7 +159,8 @@ PostgreSQL при старте системы:
 .. code:: bash
 
     sqlalchemy.url = postgresql://ckan_default:pass@localhost/ckan_default
-    ckan.site_url = http://82.162.194.216/ckan
+    ckan.site_url = http://82.162.194.216
+    ckan.root_path = /ckan/{{LANG}}
 
 
 Установка Solr5
@@ -639,6 +640,15 @@ PostgreSQL при старте системы:
     ckanext.spatial.common_map.custom.url = http://tiles.maps.sputnik.ru/{z}/{x}/{y}.png
     ckanext.spatial.common_map.custom.name = Карта Спутник
     ckanext.spatial.common_map.attribution = © <a href="http://sputnik.ru">Спутник</a> | © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>
+
+
+Исправление текущего кода CKAN
+------------------------------
+
+В последующих релизах эти ошибки будут устранены, но пока они не выпущены,
+то приходится модифицировать код самостоятельно. Это необходимо сделать
+в соответствии со следующими коммитами: `#9cf0369 <https://github.com/ckan/ckan/commit/9cf0369>`_,
+`#a63de1b <https://github.com/ckan/ckan/commit/a63de1b>`_.
 
 
 Исправления текущего кода DataStore и DataPusher
