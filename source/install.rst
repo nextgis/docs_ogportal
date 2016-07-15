@@ -648,7 +648,8 @@ PostgreSQL при старте системы:
 В последующих релизах эти ошибки будут устранены, но пока они не выпущены,
 то приходится модифицировать код самостоятельно. Это необходимо сделать
 в соответствии со следующими коммитами: `#9cf0369 <https://github.com/ckan/ckan/commit/9cf0369>`_,
-`#a63de1b <https://github.com/ckan/ckan/commit/a63de1b>`_.
+`#a63de1b <https://github.com/ckan/ckan/commit/a63de1b>`_,
+`#a76da0c <https://github.com/ckan/ckan/commit/a76da0c>`_.
 
 
 Исправления текущего кода DataStore и DataPusher
