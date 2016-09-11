@@ -1,7 +1,8 @@
-NextGIS Open geodata portal
----------------------------
+# User documentation for NextGIS Open geodata portal
 
-User documentation for NextGIS Open geodata portal
+Read online:
+
+* Russian - http://docs.nextgis.ru/docs_ogportal/source/toc.html
 
 License
 -------------
