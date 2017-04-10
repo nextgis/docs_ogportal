@@ -15,7 +15,7 @@
 
 Устанавливаем необходимые пакеты:
 
-.. code:: bash
+.. code-block:: bash
 
     sudo yum install epel-release
     sudo yum install python-pip python-virtualenv python-devel
@@ -33,32 +33,32 @@
 
 Создаём пользователя CKAN:
 
-.. code:: bash
+.. code-block:: bash
 
     sudo useradd -m -s /sbin/nologin -d /usr/lib/ckan -c "CKAN User" ckan
 
 Домашняя папка пользователя CKAN остальным пользователям системы
 доступна только на чтение:
 
-.. code:: bash
+.. code-block:: bash
 
     sudo chmod 755 /usr/lib/ckan
 
 Переключаемся на только что созданного пользователя:
 
-.. code:: bash
+.. code-block:: bash
 
     sudo su -s /bin/bash - ckan
 
 Устанавливаем виртуальное окружение ``default``:
 
-.. code:: bash
+.. code-block:: bash
 
     virtualenv --no-site-packages default
 
 И активируем его:
 
-.. code:: bash
+.. code-block:: bash
 
     . default/bin/activate
 
@@ -66,13 +66,13 @@
 данной инструкции это версия CKAN 2.5.2. Если вы устанавливаете
 другую версию, то измените URL в следующей команде:
 
-.. code:: bash
+.. code-block:: bash
 
     pip install -e git+https://github.com/okfn/ckan.git@ckan-2.5.2#egg=ckan
 
 Устанавливаем пакеты Python, от которых зависит CKAN:
 
-.. code:: bash
+.. code-block:: bash
 
     pip install -r default/src/ckan/requirements.txt
 
@@ -83,7 +83,7 @@
 Инициализируем базу данных и включаем автоматический запуск
 PostgreSQL при старте системы:
 
-.. code:: bash
+.. code-block:: bash
 
     sudo postgresql-setup initdb
     systemctl start postgresql
@@ -97,21 +97,21 @@ PostgreSQL при старте системы:
 Создаём пользователя базы данных ``ckan_default`` и
 саму базу также названную ``ckan_default``:
 
-.. code:: bash
+.. code-block:: bash
 
     sudo -u postgres createuser -S -D -R -P ckan_default
     sudo -u postgres createdb -O ckan_default ckan_default -E utf-8
 
 Отредактируем параметры аутентификации в соответствующем файле:
 
-.. code:: bash
+.. code-block:: bash
 
     sudo nano /var/lib/pgsql/data/pg_hba.conf
 
 Отредактируем его таким образом, чтобы в нём присутствовали следующие
 строки (исправим метод аутентификации на ``md5``, если указан иной):
 
-.. code:: bash
+.. code-block:: bash
 
     # IPv4 local connections:
     host    all             all             127.0.0.1/32            md5
@@ -124,7 +124,7 @@ PostgreSQL при старте системы:
 
 Не забудьте перезапустить PostgreSQL:
 
-.. code:: bash
+.. code-block:: bash
 
     systemctl restart postgresql
 
@@ -139,14 +139,14 @@ PostgreSQL при старте системы:
 Создание конфигурационного файла CKAN
 -------------------------------------
 
-.. code:: bash
+.. code-block:: bash
 
     sudo mkdir -p /etc/ckan/default
     sudo chown -R ckan /etc/ckan/
 
 Переключаемся на пользователя CKAN и создаём конфигурационный файл:
 
-.. code:: bash
+.. code-block:: bash
 
     sudo su -s /bin/bash - ckan
     . default/bin/activate
@@ -156,7 +156,7 @@ PostgreSQL при старте системы:
 Отредактируйте файл ``development.ini``, указав пароль пользователя
 ``ckan_default`` и URL сайта, по которому будет доступен CKAN:
 
-.. code:: bash
+.. code-block:: bash
 
     sqlalchemy.url = postgresql://ckan_default:pass@localhost/ckan_default
     ckan.site_url = http://82.162.194.216
@@ -168,7 +168,7 @@ PostgreSQL при старте системы:
 
 Скачиваем Solr. На текущий момент последняя версия - 5.5.0:
 
-.. code:: bash
+.. code-block:: bash
 
     wget http://apache-mirror.rbc.ru/pub/apache/lucene/solr/5.5.0/solr-5.5.0.zip
     unzip solr-5.5.0.zip
@@ -176,7 +176,7 @@ PostgreSQL при старте системы:
 
 Устанавливаем Solr в ``/opt/solr5``:
 
-.. code:: bash
+.. code-block:: bash
 
     unzip solr-5.5.0.zip
     cd solr-5.5.0/bin
@@ -188,7 +188,7 @@ PostgreSQL при старте системы:
 
 Создадим отдельное ядро Solr для CKAN:
 
-.. code:: bash
+.. code-block:: bash
 
     sudo su solr
     cd /opt/solr5/solr/bin
@@ -196,14 +196,14 @@ PostgreSQL при старте системы:
 
 Настроим схему:
 
-.. code:: bash
+.. code-block:: bash
 
     cd /var/solr/data/ckan/conf
     ln -s /usr/lib/ckan/default/src/ckan/ckan/config/solr/schema.xml .
 
 Удалим файл ``managed-schema``:
 
-.. code:: bash
+.. code-block:: bash
 
     rm managed-schema
 
@@ -211,7 +211,7 @@ PostgreSQL при старте системы:
 ``<schemaFactory class="ManagedIndexSchemaFactory">``
 и закомментируйте его:
 
-.. code:: xml
+.. code-block:: xml
 
     <!--
     <schemaFactory class="ManagedIndexSchemaFactory">
@@ -222,14 +222,14 @@ PostgreSQL при старте системы:
 
 Добавьте элемент:
 
-.. code:: xml
+.. code-block:: xml
 
     <schemaFactory class="ClassicIndexSchemaFactory"/>
 
 Найдите элемент ``<initParams>``, ссылающийся на
 ``add-unknown-fields-to-the-schema`` и закомментируйте его:
 
-.. code:: xml
+.. code-block:: xml
 
     <!--
     <initParams path="/update/**">
@@ -241,7 +241,7 @@ PostgreSQL при старте системы:
 
 Также закомментируйте этот элемент:
 
-.. code:: xml
+.. code-block:: xml
 
     <!--
     <processor class="solr.AddSchemaFieldsUpdateProcessorFactory">
@@ -268,14 +268,14 @@ PostgreSQL при старте системы:
 
 Перезапускаем Solr:
 
-.. code:: bash
+.. code-block:: bash
 
     sudo service solr restart
 
 Отредактируем файл ``/etc/ckan/default/development.ini``, раскомментировав
 соответствующую строку и указав URL Solr:
 
-.. code:: bash
+.. code-block:: bash
 
     solr_url = http://127.0.0.1:8983/solr/ckan
 
@@ -283,7 +283,7 @@ PostgreSQL при старте системы:
 Инициализация базы данных
 -------------------------
 
-.. code:: bash
+.. code-block:: bash
 
     sudo su -s /bin/bash - ckan
     . default/bin/activate
@@ -297,35 +297,35 @@ PostgreSQL при старте системы:
 Откроём файл ``development.ini`` и в список плагинов добавим
 ``datastore``:
 
-.. code:: bash
+.. code-block:: bash
 
     ckan.plugins = stats text_view image_view recline_view datastore
 
 В базе данных создадим пользователя ``datastore_default``, который
 не будет имет прав на запись, только на чтение:
 
-.. code:: bash
+.. code-block:: bash
 
     sudo -u postgres createuser -S -D -R -P -l datastore_default
 
 Создадим базу данных ``datastore_default``, владельцем которой будет
 пользователь ``ckan_default``:
 
-.. code:: bash
+.. code-block:: bash
 
     sudo -u postgres createdb -O ckan_default datastore_default -E utf-8
 
 Откроем файл ``development.ini``, расскомментируем и отредактируем
 следующие строки, указав соответствующие пароли:
 
-.. code:: bash
+.. code-block:: bash
 
     ckan.datastore.write_url = postgresql://ckan_default:pass@localhost/datastore_default
     ckan.datastore.read_url = postgresql://datastore_default:pass@localhost/datastore_default
 
 Выставим права в базе данных:
 
-.. code:: bash
+.. code-block:: bash
 
     cd /usr/lib/ckan
     . default/bin/activate
@@ -339,7 +339,7 @@ PostgreSQL при старте системы:
 За основу взята инструкция по установке из
 `официальной документации <http://docs.ckan.org/projects/datapusher/en/latest/>`_.
 
-.. code:: bash
+.. code-block:: bash
 
     sudo su -s /bin/bash - ckan
     virtualenv --no-site-packages datapusher
@@ -353,13 +353,13 @@ PostgreSQL при старте системы:
 
 В файле ``development.ini`` добавим соответствующий плагин:
 
-.. code:: bash
+.. code-block:: bash
 
     ckan.plugins = <прочие плагины> datapusher
 
 Также раскомментируйте следующие строки:
 
-.. code:: bash
+.. code-block:: bash
 
     ckan.datapusher.formats = csv xls xlsx tsv application/csv application/vnd.ms-excel application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
     ckan.datapusher.url = http://127.0.0.1:8800/
@@ -371,7 +371,7 @@ PostgreSQL при старте системы:
 Файл ``who.ini`` (конфигурационный файл Repoze.who) должен располагаться
 в той же папке, что и конфигурационный файл CKAN:
 
-.. code:: bash
+.. code-block:: bash
 
     ln -s /usr/lib/ckan/default/src/ckan/who.ini /etc/ckan/default/who.ini
 
@@ -381,13 +381,13 @@ PostgreSQL при старте системы:
 
 В файл ``development.ini`` добавьте плагин с темой:
 
-.. code:: bash
+.. code-block:: bash
 
     ckan.plugins = <прочие плагины> fareast_theme
 
 И установите саму тему:
 
-.. code:: bash
+.. code-block:: bash
 
     sudo su -s /bin/bash - ckan
     . default/bin/activate
@@ -401,7 +401,7 @@ PostgreSQL при старте системы:
 
 В файлe ``development.ini``:
 
-.. code:: bash
+.. code-block:: bash
 
     ckan.auth.create_user_via_web = false
     ckan.locale_default = ru
@@ -425,14 +425,14 @@ PostgreSQL при старте системы:
 
 Переходим в папку ``/etc/ckan/default``:
 
-.. code:: bash
+.. code-block:: bash
 
     sudo su -s /bin/bash - ckan
     cd /etc/ckan/default
 
 И создаём файл ``uwsgiapp.py`` со следующим содержимым:
 
-.. code:: python
+.. code-block:: python
 
     import os
     activate_this = os.path.join('/usr/lib/ckan/default/bin/activate_this.py')
@@ -446,14 +446,14 @@ PostgreSQL при старте системы:
 
 Устанавливаем Nginx и uWSGI:
 
-.. code:: bash
+.. code-block:: bash
 
     sudo yum install uwsgi uwsgi-plugin-python
 
 Переходим в папку ``/etc/uwsgi.d`` и создаём файл ``ckan.ini``
 следующего содержания:
 
-.. code:: bash
+.. code-block:: bash
 
     [uwsgi]
 
@@ -479,13 +479,13 @@ PostgreSQL при старте системы:
 Поскольку uWSGI запущен в режиме ``Tyrant``, то необходимо изменить
 владельца конфигурационного файла ``ckan.ini``:
 
-.. code:: bash
+.. code-block:: bash
 
     sudo chown uwsgi:uwsgi ckan.ini
 
 Создадим папку, куда будут писаться логи:
 
-.. code:: bash
+.. code-block:: bash
 
     sudo mkdir /var/log/uwsgi
     sudo touch /var/log/uwsgi/ckan.log
@@ -494,7 +494,7 @@ PostgreSQL при старте системы:
 Для ротации логов в папке ``/etc/logrotate.d`` создадим файл
 ``uwsgi`` следующего содержания:
 
-.. code:: bash
+.. code-block:: bash
 
     /var/log/uwsgi/*.log {
         copytruncate
@@ -508,7 +508,7 @@ PostgreSQL при старте системы:
 
 Запускаем uWSGI:
 
-.. code:: bash
+.. code-block:: bash
 
     sudo systemctl start uwsgi
     sudo systemctl enable uwsgi
@@ -516,7 +516,7 @@ PostgreSQL при старте системы:
 В папке ``/etc/nginx/conf.d`` создадим файл ``ckan.conf``
 следующего содержания:
 
-.. code:: bash
+.. code-block:: bash
 
     uwsgi_cache_path /var/lib/nginx/cache levels=1:2 keys_zone=ckan:30m max_size=250m;
 
@@ -544,14 +544,14 @@ PostgreSQL при старте системы:
 
 Создадим папку под кэш:
 
-.. code:: bash
+.. code-block:: bash
 
     sudo mkdir /var/lib/nginx/cache
     sudo chown nginx:nginx /var/lib/nginx/cache
 
 Запускаем Nginx:
 
-.. code:: bash
+.. code-block:: bash
 
     sudo systemctl start nginx
     sudo systemctl enable nginx
@@ -566,7 +566,7 @@ PostgreSQL при старте системы:
 Развёртывание DataPusher
 ------------------------
 
-.. code:: bash
+.. code-block:: bash
 
     sudo cp /usr/lib/ckan/datapusher/src/datapusher/deployment/datapusher.wsgi /etc/ckan/
     sudo cp /usr/lib/ckan/datapusher/src/datapusher/deployment/datapusher_settings.py /etc/ckan/
@@ -575,13 +575,13 @@ PostgreSQL при старте системы:
 
 В файле ``datapusher_settings.py`` допишите строку:
 
-.. code:: bash
+.. code-block:: bash
 
     MAX_CONTENT_LENGTH = 1073741824
 
 Подготавливаем uWSGI:
 
-.. code:: bash
+.. code-block:: bash
 
     sudo touch /etc/uwsgi.d/datapusher.ini
     sudo chown uwsgi:uwsgi /etc/uwsgi.d/datapusher.ini
@@ -590,7 +590,7 @@ PostgreSQL при старте системы:
 
 В файл ``datapusher.ini`` помещаем следующее содержимое:
 
-.. code:: bash
+.. code-block:: bash
 
     [uwsgi]
 
@@ -622,7 +622,7 @@ PostgreSQL при старте системы:
 нам возможностей, поэтому была выполнена его доработка. В связи с этим
 устанавливать его мы будем из собственного репозитория:
 
-.. code:: bash
+.. code-block:: bash
 
     sudo su -s /bin/bash - ckan
     . default/bin/activate
@@ -633,7 +633,7 @@ PostgreSQL при старте системы:
 Изменим стандартную подложку, для этого в файл ``development.ini`` добавим
 следующие строки:
 
-.. code:: bash
+.. code-block:: bash
 
     # Settings for ckanext-geoview extension
     ckanext.spatial.common_map.type = custom
@@ -657,21 +657,21 @@ PostgreSQL при старте системы:
 
 Откроем файл ``commas.py``:
 
-.. code:: bash
+.. code-block:: bash
 
     cd /usr/lib/ckan/datapusher/lib/python2.7/site-packages/messytables
     nano commas.py
 
 И отредактируем следующую строку. Вместо:
 
-.. code:: bash
+.. code-block:: bash
 
     # Fix the maximum field size to something a little larger
     csv.field_size_limit(256000)
 
 должно быть:
 
-.. code:: bash
+.. code-block:: bash
 
     # Fix the maximum field size to something a little larger
     csv.field_size_limit(100 * 1024 * 1024)
@@ -684,21 +684,21 @@ PostgreSQL при старте системы:
 с WKT геометрией (если такое поле есть в CSV) и падает.
 Откроем файл ``helpers.py``:
 
-.. code:: bash
+.. code-block:: bash
 
     cd /usr/lib/ckan/default/src/ckan/ckanext/datastore
     nano helpers.py
 
 И отредактируем следующий фрагмент. Вместо:
 
-.. code:: bash
+.. code-block:: bash
 
     def should_fts_index_field_type(field_type):
         return field_type.lower() in ['tsvector', 'text', 'number']
 
 должно быть:
 
-.. code:: bash
+.. code-block:: bash
 
     def should_fts_index_field_type(field_type):
         return field_type.lower() in ['tsvector', 'number']
@@ -706,14 +706,14 @@ PostgreSQL при старте системы:
 Сделаем ещё одно исправление для отключения включения WKT в
 полнотекстовый поиск. Откроем файл ``db.py``:
 
-.. code:: bash
+.. code-block:: bash
 
     cd /usr/lib/ckan/default/src/ckan/ckanext/datastore
     nano db.py
 
 И отредактируем функцию ``_to_full_text``:
 
-.. code:: python
+.. code-block:: python
 
     def _to_full_text(fields, record):
         full_text = []
@@ -737,7 +737,7 @@ PostgreSQL при старте системы:
 
 Увеличим таймаут в файле ``jobs.py``:
 
-.. code:: bash
+.. code-block:: bash
 
     cd /usr/lib/ckan/datapusher/src/datapusher/datapusher
     nano jobs.py
@@ -755,7 +755,7 @@ PostgreSQL при старте системы:
 и фактическое количество объектов в слое. Количество объектов в слое
 можно получить по API (подставьте свой идентификатор ресурса):
 
-.. code:: bash
+.. code-block:: bash
 
     http://82.162.194.216/ngw/api/resource/167/feature_count
 
@@ -764,7 +764,7 @@ PostgreSQL при старте системы:
 
 Откроем ``80`` порт:
 
-.. code:: bash
+.. code-block:: bash
 
     sudo firewall-cmd --zone=public --add-port=80/tcp --permanent
     sudo firewall-cmd --reload
@@ -772,7 +772,7 @@ PostgreSQL при старте системы:
 Если с локального хоста CKAN недоступен по своему публичному адресу,
 то это может быть исправлено, например, так:
 
-.. code:: bash
+.. code-block:: bash
 
     sudo firewall-cmd --direct --add-rule ipv4 nat OUTPUT 0 -d 82.162.194.216 -p tcp --dport 80 -j DNAT --to-destination 127.0.0.1:80 --permanent
     sudo firewall-cmd --reload
@@ -790,7 +790,7 @@ Backup и Restore
 NextGIS Web на новые. Проще всего это сделать, отредактировав файл
 с бэкапом CKAN до момента его восставновления, например:
 
-.. code:: bash
+.. code-block:: bash
 
     sed -i 's:78.46.100.76/opendata_ngw:82.162.194.216/ngw:g' ckan.pg_dump
 
@@ -810,7 +810,7 @@ NextGIS Web на новые. Проще всего это сделать, отр
 Конфигурационный файл uWSGI для NextGIS Web:
 
 
-.. code:: bash
+.. code-block:: bash
 
     [uwsgi]
 
@@ -843,7 +843,7 @@ NextGIS Web на новые. Проще всего это сделать, отр
 
 Конфигурационный файл Nginx:
 
-.. code:: bash
+.. code-block:: bash
 
     uwsgi_cache_path /var/lib/nginx/cache levels=1:2 keys_zone=ckan:30m max_size=250m;
     uwsgi_cache_path /mnt/portal/ngw/cache levels=1:2 keys_zone=ngw:30m max_size=10g inactive=7d;
@@ -897,6 +897,6 @@ NextGIS Web на новые. Проще всего это сделать, отр
 
 Пример удаления записей из кэша Nginx по маске:
 
-.. code:: bash
+.. code-block:: bash
 
     grep -lr 'ngw/api/resource/604*' /mnt/portal/ngw/cache/* | xargs rm -rf
