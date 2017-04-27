@@ -41,7 +41,7 @@
 
    Главная страница портала.
 
-2. Вы увидите список массивов данных. Выберите название нужного вам массива данных.  (см. :numref:`ogportalCKANUserPacketsPage`). 
+2. Вы увидите список массивов данных. Выберите название нужного вам массива данных (см. :numref:`ogportalCKANUserPacketsPage`): 
 
 .. figure:: _static/ogportalCKANUserPacketsPage.png
    :name: ogportalCKANUserPacketsPage
