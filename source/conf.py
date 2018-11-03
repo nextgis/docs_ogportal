@@ -34,7 +34,7 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.intersphinx',
     'sphinx.ext.todo',
-    'sphinx.ext.pngmath',
+    'sphinx.ext.imgmath',
     'sphinx.ext.ifconfig',
     'sphinx.ext.viewcode',
 ]
@@ -55,7 +55,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'NextGIS Open geodata portal'
-copyright = u'2016, NextGIS'
+copyright = u'2016-2018, NextGIS'
 author = u'Команда NextGIS'
 
 # The version info for the project you're documenting, acts as replacement for
